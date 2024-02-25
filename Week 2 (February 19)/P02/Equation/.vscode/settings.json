@@ -1,0 +1,9 @@
+{
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/pedro/Programação/Week 3 (February 19)/P02/Equation",
+      "binaryPath": "/home/pedro/Programação/Week 3 (February 19)/P02/Equation/equation",
+      "binaryArgs": []
+    }
+  ]
+}
