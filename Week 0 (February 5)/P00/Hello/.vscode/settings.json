@@ -1,9 +1,0 @@
-{
-    "makefile.launchConfigurations": [
-        {
-            "cwd": "/home/pedro/Programação/Week 1 (February 5) - hello C++/P00 - hello C++/Hello",
-            "binaryPath": "/home/pedro/Programação/Week 1 (February 5) - hello C++/P00 - hello C++/Hello/hello",
-            "binaryArgs": []
-        }
-    ]
-}
