@@ -2,52 +2,62 @@
 #include "interval.h"
 using namespace std;
 
-int compare_time_of_day(const time_of_day& t1, const time_of_day& t2) {
-    if (t1.h < t2.h) return -1;
-    if (t1.h > t2.h) return 1;
-    if (t1.m < t2.m) return -1;
-    if (t1.m > t2.m) return 1;
-    return 0;
+bool belong(interval a, time_of_day t)
+{
+    if ((t.h < a.start.h) || (t.h > a.end.h) || (t.h <= a.start.h && t.m < a.start.m) || (t.h >= a.end.h && t.m >= a.end.m))
+        return false;
+    return true;
 }
+int adder(interval a)
+{
+    int res = 0;
 
-int compare_intervals(const interval& i1, const interval& i2) {
-    int start_cmp = compare_time_of_day(i1.start, i2.start);
-    int end_cmp = compare_time_of_day(i1.end, i2.end);
-
-    if (start_cmp == 0 && end_cmp == 0) return 0;
-    if (start_cmp < 0 && end_cmp > 0) return 1;
-    if (start_cmp > 0 && end_cmp < 0) return -1;
-
-    if (start_cmp < 0 && end_cmp < 0) {
-        if (compare_time_of_day(i1.end, i2.start) > 0) return 1;
-    } else if (start_cmp > 0 && end_cmp > 0) {
-        if (compare_time_of_day(i1.start, i2.end) < 0) return 1;
+    if (a.end.m < a.start.m)
+    {
+        res = (60 - a.start.m) + a.end.m + (a.end.h - a.start.h - 1) * 60;
+    }
+    else
+    {
+        res = (a.end.h - a.start.h) * 60 + (a.end.m - a.start.m);
     }
 
-    return 0;
+    return res;
 }
+int search_intervals(time_of_day t, const interval a[], int n, interval &u)
+{
+    int sum = 0;
+    u.start = t;
+    u.end = t;
+    for (int i = 0; i < n; i++)
+    {
+        if (belong(a[i], t) == true)
+        {
 
-int search_intervals(time_of_day t, const interval a[], int n, interval& u) {
-    int total_duration = 0;
-
-    for (int i = 0; i < n; ++i) {
-        if (compare_time_of_day(t, a[i].start) >= 0 && compare_time_of_day(t, a[i].end) < 0) {
-            if (total_duration == 0) {
+            if (a[i].start.h < u.start.h)
+            {
                 u.start = a[i].start;
             }
-            u.end = a[i].end;
-            total_duration += (u.end.h - u.start.h) * 60 + (u.end.m - u.start.m);
+            else if (a[i].start.h == u.start.h)
+            {
+                if (a[i].start.m <= u.start.m)
+                    u.start = a[i].start;
+            }
+            if (a[i].end.h > u.end.h)
+            {
+                u.end = a[i].end;
+            }
+            else if (a[i].end.h == u.end.h)
+            {
+                if (a[i].end.m >= u.end.m)
+                    u.end = a[i].end;
+            }
         }
     }
-
-    if (total_duration == 0) {
-        u = {t, t};
-        return 0;
-    }
-
-    return total_duration;
+    sum = adder(u);
+    return sum;
 }
 
-int main() {
+int main()
+{
     return 0;
 }
