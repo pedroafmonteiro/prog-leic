@@ -14,9 +14,13 @@ double average(const string fname) {
     for (string line; getline(in, line); ) {
         istringstream iss(line);
         for (string x; iss >> x; ) {
-            x.erase(std::remove_if(x.begin(), x.end(), [](unsigned char c) { return !std::isdigit(c) && c != '.'; }), x.end());
+            replace_if(x.begin(), x.end(), [](char c) {
+                return !isdigit(c) && c != '.' && c != '-';
+            }, ' ');
             istringstream d(x);
-            for (double y; d >> y; ) values.push_back(y);
+            for (double y; d >> y; ) {
+                values.push_back(y);
+            }
         }
     }
     for (size_t i = 0; i < values.size(); i++) {
@@ -26,7 +30,5 @@ double average(const string fname) {
 }
 
 int main() {
-    { double m = average("tests/p6_test4.txt"); 
-  cout << fixed << setprecision(2) << m << '\n'; }
     return 0;
 }
